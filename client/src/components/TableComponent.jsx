@@ -17,7 +17,7 @@ export default function TableComponent() {
   const [updatedData, setUpdatedData] = useState({});
   const dispatch = useDispatch();
   const productList = useSelector(state => state.productList)
-  const {error, laoding, products} = productList
+  const {error, laoding, items=[]} = productList
 
   
 
@@ -25,7 +25,7 @@ export default function TableComponent() {
   const indeterminate = hasSelection && selection.length < items.length;
 
   const handleQuickActionClick = (id) => {
-    setExpandedRow((prev) => (prev === id ? null : id)); // Toggle expanded row
+    setExpandedRow((prev) => (prev === id ? null : id)); 
   };
 
   const handleDataChange = (e, key) => {
@@ -74,9 +74,10 @@ export default function TableComponent() {
     fetchData();  
   }, []);
 
-  // useEffect(() => {
-  //   dispatch(listProducts())
-  // }, [])
+  useEffect(() => {
+    dispatch(listProducts())
+    console.log(items)
+  }, [])
   
 
   const rows = items.map((item) => (
@@ -253,13 +254,13 @@ export default function TableComponent() {
   );
 }
 
-const items = [
-  { id: 1, product: "Stainless Stell 304 Pipe", priceInUnit: 999.99, length: "255 mm", material: "Aluminium", shape: "Round", thickness: "", surfaceFinish: "", outerDiameter: "" },
-  { id: 2, product: "Carbon Stell A105 Tubing",  priceInUnit: 49.99, length: "", material: "", shape: "", thickness: "", surfaceFinish: "", outerDiameter: "" },
-  { id: 3, product: "Duplex Steel 2205 Flangers",  priceInUnit: 150.0, length: "", material: "", shape: "", thickness: "", surfaceFinish: "", outerDiameter: "" },
-  { id: 4, product: "Carbon Steel A105 Tubing", priceInUnit: 799.99, length: "", material: "", shape: "", thickness: "", surfaceFinish: "", outerDiameter: "" },
-  { id: 5, product: "Hastelloy C22 Valves",  priceInUnit: 199.99, length: "", material: "", shape: "", thickness: "", surfaceFinish: "", outerDiameter: "" },
-  { id: 5, product: "Incoloy 800 Gasket",  priceInUnit: 199.99, length: "", material: "", shape: "", thickness: "", surfaceFinish: "", outerDiameter: "" },
-  { id: 5, product: "Inconel 600 Instrumentation Fittings",  priceInUnit: 199.99, length: "", material: "", shape: "", thickness: "", surfaceFinish: "", outerDiameter: "" },
-  { id: 5, product: "Copper Nickel 90/10 Pipe Fittings",  priceInUnit: 199.99, length: "", material: "", shape: "", thickness: "", surfaceFinish: "", outerDiameter: "" },
-];
+// const items = [
+//   { id: 1, product: "Stainless Stell 304 Pipe", priceInUnit: 999.99, length: "255 mm", material: "Aluminium", shape: "Round", thickness: "", surfaceFinish: "", outerDiameter: "" },
+//   { id: 2, product: "Carbon Stell A105 Tubing",  priceInUnit: 49.99, length: "", material: "", shape: "", thickness: "", surfaceFinish: "", outerDiameter: "" },
+//   { id: 3, product: "Duplex Steel 2205 Flangers",  priceInUnit: 150.0, length: "", material: "", shape: "", thickness: "", surfaceFinish: "", outerDiameter: "" },
+//   { id: 4, product: "Carbon Steel A105 Tubing", priceInUnit: 799.99, length: "", material: "", shape: "", thickness: "", surfaceFinish: "", outerDiameter: "" },
+//   { id: 5, product: "Hastelloy C22 Valves",  priceInUnit: 199.99, length: "", material: "", shape: "", thickness: "", surfaceFinish: "", outerDiameter: "" },
+//   { id: 5, product: "Incoloy 800 Gasket",  priceInUnit: 199.99, length: "", material: "", shape: "", thickness: "", surfaceFinish: "", outerDiameter: "" },
+//   { id: 5, product: "Inconel 600 Instrumentation Fittings",  priceInUnit: 199.99, length: "", material: "", shape: "", thickness: "", surfaceFinish: "", outerDiameter: "" },
+//   { id: 5, product: "Copper Nickel 90/10 Pipe Fittings",  priceInUnit: 199.99, length: "", material: "", shape: "", thickness: "", surfaceFinish: "", outerDiameter: "" },
+// ];
