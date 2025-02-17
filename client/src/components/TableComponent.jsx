@@ -7,9 +7,8 @@ import {
   ActionBarSeparator,
 } from "./ui/action-bar";
 import { Checkbox } from "./ui/checkbox";
-import axios from "axios"
 import { useDispatch, useSelector } from "react-redux";
-import { listProducts } from "../actions/productListActions";
+import { listProducts, updateProduct } from "../actions/productListActions";
 
 export default function TableComponent() {
   const [selection, setSelection] = useState([]);
@@ -17,7 +16,7 @@ export default function TableComponent() {
   const [updatedData, setUpdatedData] = useState({});
   const dispatch = useDispatch();
   const productList = useSelector(state => state.productList)
-  const {error, laoding, items=[]} = productList
+  const {error, loading, items=[]} = productList
 
   
 
@@ -41,43 +40,53 @@ export default function TableComponent() {
     setUpdatedData({});
   };
 
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-     
-    }}
+  
 
-  const handleGetAllProducts = async () => {
-    try {
-      const response = await axios.get('http://localhost:8000/api/products', config);
-      return response.data; 
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      throw new Error("Error fetching products"); 
-    }
-  };
+  // I dont need this code as I am using dispatch
+  // const handleGetAllProducts = async () => {
+  //   try {
+  //     const response = await axios.get('http://localhost:8000/api/products', config);
+  //     return response.data; 
+  //   } catch (error) {
+  //     console.error("Error fetching products:", error);
+  //     throw new Error("Error fetching products"); 
+  //   }
+  // };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const products = await handleGetAllProducts(); 
-        console.log("Fetched Products:", products); 
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const products = await handleGetAllProducts(); 
+  //       console.log("Fetched Products:", products); 
+  //     } catch (error) {
+  //       console.error("Error fetching products:", error);
+  //     }
+  //   };
 
    
 
 
   
-    fetchData();  
-  }, []);
+  //   fetchData();  
+  // }, []);
 
   useEffect(() => {
+    
+
     dispatch(listProducts())
-    console.log(items)
-  }, [])
+    
+  }, [dispatch])
+
+ 
+
+  const handleSubmit = (productid) => {
+  
+    const updatedProduct = { ...updatedData, _id: productid };
+  
+    
+    dispatch(updateProduct(productid, updatedProduct));
+    setExpandedRow(null)
+  };
   
 
   const rows = items.map((item) => (
@@ -203,7 +212,9 @@ export default function TableComponent() {
           <Table.Row>
           <Table.Cell colSpan={5}>
           <Box p={4} borderWidth={1} borderRadius="md" mt={2} display="flex">
-          <Button width="150px" mr={4} borderRadius={50} bg="blue.700">Update</Button>
+          <Button width="150px" mr={4} borderRadius={50} bg="blue.700" onClick={() => handleSubmit(item._id)}>
+                Update
+              </Button>
           </Box>
           </Table.Cell>
         </Table.Row>
@@ -243,11 +254,9 @@ export default function TableComponent() {
           </ActionBarSelectionTrigger>
           <ActionBarSeparator />
           <Button variant="outline" size="sm">
-            Delete <Kbd>⌫</Kbd>
+            Delete 
           </Button>
-          <Button variant="outline" size="sm">
-            Share <Kbd>T</Kbd>
-          </Button>
+          
         </ActionBarContent>
       </ActionBarRoot>
     </>

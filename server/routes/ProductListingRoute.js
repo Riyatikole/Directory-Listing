@@ -2,11 +2,12 @@
 const express = require('express');
 const router = express.Router();
 const {
-  getAllProducts
+  getAllProducts, updateProduct
 } = require('../controllers/ProductListingController');
 
 router.get('/', getAllProducts);
+router.put('/update/:productId', updateProduct); 
 
 
 
-module.exports = router;
+module.exports = { productRoutes: router };
